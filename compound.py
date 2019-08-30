@@ -119,10 +119,35 @@ class PrintWriter(Writer):
 class HtmlWriter(Writer):
 
     def begin_document(self):
-        pass
+        print("<html>")
+        print("<head>")
+        print("<style>")
+        style="""
+        th {
+          text-align: left;
+        }
+        table, th, td, tr {
+          padding: 5px;
+          border: 0px;
+        }
+        .col_1 {
+          background-color: lightgreen;
+        }
+        .col_2 {
+          background-color: lightyellow;
+        }
+        .col_3 {
+          background-color: lightcoral;
+        }
+        """
+        print(style)
+        print("</style>")
+        print("</head>")
+        print("<body>")
 
     def end_document(self):
-        pass
+        print("</body>")
+        print("</html>")
 
     def begin_property(self, price, service_charge):
         Writer.begin_property(self, price, service_charge)
@@ -148,24 +173,24 @@ class HtmlWriter(Writer):
     def end_rows(self):
         print("<table>")
         print("<tr>")
-        print("<td></td>")
-        for row in self.rows:
-            print("<td>%s%%</td>" % row["rate"])
+        print("<th>Interest rate</th>")
+        for i, row in enumerate(self.rows):
+            print("<td class=col_%s>%s%%</td>" % (i+1, row["rate"]))
         print("</tr>")
         print("<tr>")
-        print("<td>Total mortgage cost</td>")
-        for row in self.rows:
-            print("<td>£%.2f</td>" % row["mortgage_cost"])
+        print("<th>Total mortgage cost</th>")
+        for i, row in enumerate(self.rows):
+            print("<td class=col_%s>£%.2f</td>" % (i+1, row["mortgage_cost"]))
         print("</tr>")
         print("<tr>")
-        print("<td>Monthly mortgage cost</td>")
-        for row in self.rows:
-            print("<td>£%.2f</td>" % row["mortgage_pcm"])
+        print("<th>Monthly mortgage cost</th>")
+        for i, row in enumerate(self.rows):
+            print("<td class=col_%s>£%.2f</td>" % (i+1, row["mortgage_pcm"]))
         print("</tr>")
         print("<tr>")
-        print("<td>Monthly cost</td>")
-        for row in self.rows:
-            print("<td>£%.2f</td>" % row["cost_pcm"])
+        print("<th>Monthly cost</th>")
+        for i, row in enumerate(self.rows):
+            print("<td class=col_%s>£%.2f</td>" % (i+1, row["cost_pcm"]))
         print("</tr>")
         print("</table>")
         Writer.end_rows(self)
